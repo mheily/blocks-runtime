@@ -1,0 +1,14 @@
+UNRELEASED      Mark Heily      <mark@heily.com>
+
+    * Merge code from the objc2 branch @r29 back into trunk.
+
+2012-11-04      Mark Heily      <mark@heily.com>
+
+    * Migrate SVN repository to sourceforge.net
+    * Make all exported symbols weak, to coexist with libobjc2
+    * Release version 0.2 (r27)
+
+2010-06-24      Mark Heily      <mark@heily.com>
+
+    * Initial release of libBlocksRuntime from complier-rt r104787
+

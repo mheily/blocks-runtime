@@ -1,0 +1,31 @@
+Source: libblocksruntime
+Priority: extra
+Maintainer: Mark Heily <mark@heily.com>
+Build-Depends: debhelper (>= 7), clang
+Standards-Version: 3.8.4
+Section: libs
+Homepage: http://compiler-rt.llvm.org/
+
+Package: libblocksruntime-dev
+Section: libdevel
+Architecture: any
+Depends: libblocksruntime0 (= ${binary:Version}), ${misc:Depends}
+Description: Blocks Runtime (development files)
+ This package contains development headers for building software that
+ uses blocks.
+ .
+ Blocks are a proposed extension to the C, Objective C, and C++ languages
+ developed by Apple to support the Grand Central Dispatch concurrency engine.
+
+Package: libblocksruntime0
+Section: libs
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: Blocks Runtime library
+ Blocks are a proposed extension to the C, Objective C, and C++ languages
+ developed by Apple to support the Grand Central Dispatch concurrency engine.
+ Blocks are anonymous inline functions that automatically capture a read-only
+ copy of local variables, and have read-write access to local variables that
+ are declared with the "__block" storage class.  
+ .
+ This package contains a library that is needed by programs that use Blocks.

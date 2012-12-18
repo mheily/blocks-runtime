@@ -1,0 +1,7 @@
+This source tree is based on the BlocksRuntime directory of the compiler-rt
+sources. There is no interdependency between libBlocksRuntime and the rest
+of compiler-rt, so it is somewhat odd that they are distributed together.
+
+compiler-rt uses CMake, which is overkill for a tiny library like libBlocksRuntime. I copied the values from config.h and the CFLAGS from the CMake build system into Makefile and config.inc.
+
+  - Mark 
