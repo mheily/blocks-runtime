@@ -1,4 +1,6 @@
-#!/usr/bin/env ruby
+#!/bin/sh
+#
+# Bootstrap configuration script for Makeconf
 #
 # Copyright (c) 2011 Mark Heily <mark@heily.com>
 #
@@ -12,49 +14,40 @@
 # ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
 # WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
 # ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
-# OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 #
 
-$LOAD_PATH << 'makeconf'
+die() {
+  printf "\n*** ERROR: $1 ***\n\n$2\n\n"
+  exit 1
+}
 
-require 'makeconf'
+if [ "$RUBY" != "" ] ; then
+  ruby=$RUBY
+else
+  ruby=`which ruby`
+fi
 
-cc = CCompiler.new(
-  :search => %w{clang}
-)
+printf 'checking for ruby.. '
+if [ ! -x "$ruby" ] ; then
+  echo 'no'
+  die 'Ruby was not found' 'Please install Ruby from http://www.ruby-lang.org/'
+fi
 
-project = Project.new(
-  :id => 'libBlocksRuntime',
-  :version => '0.3',
-  :cc => cc
-)
-
-project.add(
-  Library.new(
-      :id => 'libBlocksRuntime', 
-      :cflags => '-DBlocksRuntime_EXPORTS -DHAVE_SYNC_BOOL_COMPARE_AND_SWAP_INT -DHAVE_SYNC_BOOL_COMPARE_AND_SWAP_LONG -std=c99 -Wall -Wextra -W -pedantic -Wno-unused-parameter',
-      :sources => %w{runtime.c data.c}
-  ),
-  Header.new( :id => 'headers', :sources => %w{ Block.h Block_private.h } ),
-  Test.new(
-    :id => 'blktest', 
-    :cflags => '-I. -fblocks',
-    :sources => %w{test/main.c},
-    :ldadd => 'libBlocksRuntime.a'
-  )
-)
-
-# Require the use of an unofficial Clang toolchain for Android.
-if SystemType.host =~ /-androideabi$/
-  project.ndk_toolchain_version = 'clang3.1'
-end
-
-mc = Makeconf.new
-mc.configure(project)
+if [ "$RUBYLIB" != "" ] ; then
+  echo "$ruby (RUBYLIB=$RUBYLIB)"  
+  export RUBYLIB
+else
+  echo $ruby
+fi
 
 
-#package:
-#    summary: "Blocks Runtime library"
-#    description: "Blocks Runtime library"
-#    license: LLVM
-#    author: "LLVM Development Team"
+printf 'checking for makeconf.. '
+ruby -e "require 'makeconf'" > /dev/null 2>&1
+if [ $? -ne 0 ] ; then
+  echo 'no'
+  die 'Makeconf was not found' 'Please install Makeconf from https://rubygems.org/'
+fi
+echo 'yes'
+
+exec $ruby ./configure.rb $*
+
