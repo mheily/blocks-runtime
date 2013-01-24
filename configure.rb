@@ -15,9 +15,12 @@
 # OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 #
 
-$LOAD_PATH << 'makeconf'
-
+begin
 require 'makeconf'
+rescue LoadError
+  $LOAD_PATH << "makeconf"
+  require 'makeconf'
+end
 
 cc = CCompiler.new(
   :search => %w{clang}
@@ -48,10 +51,6 @@ project.add(
 if SystemType.host =~ /-androideabi$/
   project.ndk_toolchain_version = 'clang3.1'
 end
-
-mc = Makeconf.new
-mc.configure(project)
-
 
 #package:
 #    summary: "Blocks Runtime library"

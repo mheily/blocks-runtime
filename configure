@@ -5,42 +5,20 @@
 # Author:   Mark Heily <mark@heily.com>
 #
 
-die() {
-  printf "\n*** ERROR: $1 ***\n\n$2\n\n"
-  exit 1
-}
-
-if [ "$RUBY" != "" ] ; then
-  ruby=$RUBY
-else
-  ruby=`which ruby`
-fi
-
-printf 'checking for ruby.. '
-if [ ! -x "$ruby" ] ; then
-  echo 'no'
-  die 'Ruby was not found' 'Please install Ruby from http://www.ruby-lang.org/'
-fi
-
-if [ "$RUBYLIB" != "" ] ; then
-  echo "$ruby (RUBYLIB=$RUBYLIB)"  
-  export RUBYLIB
-else
-  echo $ruby
-fi
-
 printf 'checking for makeconf.. '
-ruby -e "require 'makeconf'" > /dev/null 2>&1
-if [ $? -ne 0 ] ; then
+which configure >/dev/null 2>/dev/null
+if [ $? != 0 ] ; then
   if [ -x ./makeconf ] ; then
     echo 'yes (using local copy)'
-    ruby="$ruby -I./makeconf"
+    exec makeconf/bin/configure $*
   else
     echo 'no'
-    die 'Makeconf was not found' 'Please install Makeconf from https://rubygems.org/'
+    printf "*** ERROR ***\nMakeconf was not found.\n\nPlease install Makeconf from https://rubygems.org/"
+    exit 1
   fi
 else
   echo 'yes'
+  exec configure $*
 fi
 
-exec $ruby ./configure.rb $*
+
