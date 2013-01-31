@@ -22,6 +22,8 @@ rescue LoadError
   require 'makeconf'
 end
 
+mc = Makeconf.new
+
 cc = CCompiler.new(
   :search => %w{clang}
 )
@@ -51,6 +53,8 @@ project.add(
 if SystemType.host =~ /-androideabi$/
   project.ndk_toolchain_version = 'clang3.1'
 end
+
+mc.configure project
 
 #package:
 #    summary: "Blocks Runtime library"
