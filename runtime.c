@@ -22,6 +22,7 @@
  *
  */
 
+#include "config2.h"
 #include "Block_private.h"
 #include <stdio.h>
 #include <stdlib.h>
