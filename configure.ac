@@ -1,7 +1,7 @@
 #                                               -*- Autoconf -*-
 # Process this file with autoconf to produce a configure script.
 
-AC_INIT([libBlocksRuntime], [0.4])
+AC_INIT([libBlocksRuntime], [0.4.1])
 AC_PROG_CC([clang])
 LT_INIT
 AM_INIT_AUTOMAKE([foreign subdir-objects])
