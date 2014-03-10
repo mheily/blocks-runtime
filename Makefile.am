@@ -4,9 +4,9 @@
 lib_LTLIBRARIES = libBlocksRuntime.la
 include_HEADERS = Block.h Block_private.h
 
-libBlocksRuntime_la_CFLAGS = -stg=c99 -Wall -Wextra -W -pedantic
+libBlocksRuntime_la_CFLAGS = -std=c99 -Wall -Wextra -W -pedantic
 
-libBlocksRuntime_la_SOURCES = runtime.c data.c
+libBlocksRuntime_la_SOURCES = runtime.c data.c config2.h
 
 check_PROGRAMS = blockrt-test
 
